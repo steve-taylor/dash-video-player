@@ -1,0 +1,31 @@
+plugins:
+  - '@trivago/prettier-plugin-sort-imports'
+  - 'prettier-plugin-svelte'
+trailingComma: none
+tabWidth: 4
+semi: false
+singleQuote: true
+arrowParens: avoid
+printWidth: 80
+bracketSpacing: false
+importOrder:
+  - '^@'
+  - '^(?![$.])'
+  - '^\\$.+'
+  - '^.+'
+importOrderSeparation: true
+overrides:
+  - files:
+      - '*.ts'
+    options:
+      parser: typescript
+  - files:
+      - '*.json'
+      - '*.yml'
+      - '.babelrc'
+    options:
+      tabWidth: 2
+  - files:
+      - '*.svelte'
+    options:
+      parser: svelte

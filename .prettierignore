@@ -1,0 +1,15 @@
+node_modules/
+build/
+dist/
+.husky/
+.svelte-kit/
+.env
+.env.*
+yarn.lock
+*.md
+*.svg
+.eslintignore
+.gitignore
+.prettierignore
+LICENSE
+yarn.lock
