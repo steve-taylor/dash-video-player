@@ -1,80 +1,16 @@
-import {map, Observable} from 'rxjs'
-import {ajax} from 'rxjs/ajax'
-
-export function getDashManifest(url: string): Observable<XMLDocument> {
-    return ajax<string>({
-        url,
-        method: 'GET',
-        responseType: 'text'
-    }).pipe(
-        map(res => res.response),
-        map(xml => new DOMParser().parseFromString(xml, 'application/xml'))
-    )
-}
-
-export type SegmentTemplate = {
-    duration: number // seconds
-    timescale: number
-    media: string // e.g. "$RepresentationID$/$RepresentationID$_$Number$.m4v"
-    startNumber: number
-    initialization: string // "$RepresentationID$/$RepresentationID$_0.m4v"
-}
-
-type BaseRepresentation = {
-    id: string
-    codecs: string
-    bandwidth: number
-}
-
-export type VideoRepresentation = BaseRepresentation & {
-    width: number
-    height: number
-    frameRate: number
-    sar: string // aspect ratio, e.g. "1:1"
-    scanType: 'progressive' | 'interlaced' // interlaced was a guess
-}
-
-type AudioChannelConfiguration = {
-    value: number
-}
-
-export type AudioRepresentation = BaseRepresentation & {
-    audioSamplingRate: number
-    audioChannelConfiguration: AudioChannelConfiguration
-}
-
-type BaseDashAdaptationSet = {
-    mimeType: string
-    subsegmentAlignment: boolean
-    subsegmentStartsWithSAP: number
-    segmentTemplate: SegmentTemplate
-}
-
-export type DashVideoAdaptationSet = BaseDashAdaptationSet & {
-    contentType: 'video'
-    par: string // aspect ratio
-    representations: VideoRepresentation[]
-}
-
-export type DashAudioAdaptationSet = BaseDashAdaptationSet & {
-    contentType: 'audio'
-    representations: AudioRepresentation[]
-}
-
-export type DashAdaptationSet = DashVideoAdaptationSet | DashAudioAdaptationSet
-
-type DashPeriod = {
-    adaptationSets: DashAdaptationSet[]
-}
-
-type DashManifest = {
-    type: 'static' | 'dynamic'
-    mediaPresentationDuration: number
-    minBufferTime: number
-    profiles: string
-    baseUrl: string
-    periods: DashPeriod[]
-}
+import type {
+    DashManifest,
+    DashPeriod,
+    DashAdaptationSet,
+    DashVideoAdaptationSet,
+    DashAudioAdaptationSet,
+    VideoRepresentation,
+    AudioRepresentation,
+    BaseDashAdaptationSet,
+    SegmentTemplate,
+    BaseRepresentation,
+    AudioChannelConfiguration
+} from './types'
 
 export function parseDashManifest(manifest: XMLDocument): DashManifest {
     const {documentElement} = manifest

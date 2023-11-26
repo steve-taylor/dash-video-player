@@ -7,7 +7,7 @@ understanding of adaptive video streaming.
 
 - [x] Set up a SvelteKit project with a single page and a video element
 - [x] Load and parse the DASH manifest of a single-period static video
-- [ ] Load segments for a single bitrate and feed them into the buffer
+- [x] Load segments for a single bitrate and feed them into the buffer
 - [ ] Throttle segment loading to conserve egress
 - [ ] Handle seeking/scrubbing by loading segments at and after the current
       time

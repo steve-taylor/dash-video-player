@@ -1,9 +1,9 @@
-import type {RequestEvent} from '../../$types'
+import type {RequestEvent} from './$types'
 
 export async function GET({params}: RequestEvent): Promise<Response> {
-    const response = await fetch(
-        `https://dash.akamaized.net/akamai/bbb_30fps/${params.representationId}/${params.representationId}_${params.number}.m4v`
-    )
+    const url = `https://dash.akamaized.net/akamai/bbb_30fps/${params.representationId}/${params.file}`
+
+    const response = await fetch(url)
 
     const {'content-type': contentType = ''} = Object.fromEntries(
         response.headers.entries()
@@ -12,6 +12,7 @@ export async function GET({params}: RequestEvent): Promise<Response> {
     return new Response(await response.arrayBuffer(), {
         headers: {
             'Content-Type': contentType
-        }
+        },
+        status: response.status
     })
 }
